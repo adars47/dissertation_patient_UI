@@ -2,7 +2,6 @@ import { base64StringToBlob } from 'blob-util';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 
-const EthCrypto = require('eth-crypto');
 const CryptoJS = require("crypto-js");
 
 const decryptAndDownload = async (blob,filename,decryption_key) => {

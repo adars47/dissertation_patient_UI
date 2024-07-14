@@ -15,8 +15,7 @@ const getFiles= (filepath,decryption_key) => {
             decryptAndDownload(blob,filename,decryption_key);
             return;
         }
-        
-        // download(blob,filename);
+        download(blob,filename);
 
     })
     .catch(error => console.error(error));
