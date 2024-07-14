@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "alertifyjs": "^1.14.0",
     "axios": "^1.7.2",
     "blob-util": "^2.0.2",
     "crypto-js": "^4.2.0",
@@ -20,8 +21,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-filepond": "^7.1.2",
+    "react-popup": "^0.11.2",
     "react-scripts": "4.0.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web3": "^1.0.0-beta.46"
   },
   "scripts": {
     "start": "react-scripts start",

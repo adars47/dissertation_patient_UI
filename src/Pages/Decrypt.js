@@ -2,16 +2,16 @@ import { FilePond,registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
 import { useState } from "react";
-import { base64StringToBlob } from 'blob-util';
 import { Typography, Box, Container, Button, TextField } from "@mui/material";
-const EthCrypto = require('eth-crypto');
-const CryptoJS = require("crypto-js");
+import WebComponent from '../Components/Web3Component';
 registerPlugin(FilePondPluginFileEncode);
 
 
 
 function Decrypt(){
-    const [personalFiles,setPersonalFiles] = useState({});
+    const [transactionId,setTransactionId] = useState("");
+    const [decryptionKey,setdecryptionKey] = useState("");
+    
 
     const savepatientKey = async (event) =>
     {
@@ -19,32 +19,25 @@ function Decrypt(){
         const data = new FormData(event.currentTarget);
         let patient_private_key = data.get('private_key').trim();
         let signed_encryption_key = data.get('signed_encryption_key').trim();
-        let decryption_key = await EthCrypto.decryptWithPrivateKey(patient_private_key,signed_encryption_key);
-        for(let personalFile in personalFiles['files'])
-            {
-                let val = personalFiles['files'][personalFile];
-                let blob = await val.file.text();
-                let dec = await CryptoJS.AES.decrypt(blob,decryption_key).toString(CryptoJS.enc.Utf8);
-                blob = base64StringToBlob(dec,val.file.type);
-                var csvURL = window.URL.createObjectURL(blob);
-                let tempLink = document.createElement('a');
-                tempLink.href = csvURL;
-                tempLink.setAttribute('download', val.file.name);
-                tempLink.click();
-            }        
+        if(patient_private_key === "" || patient_private_key == undefined || patient_private_key === null)
+        {
+            return ;
+        }
+        if(signed_encryption_key === "" || signed_encryption_key == undefined || signed_encryption_key === null)
+        {
+            return ;
+        }
+        setTransactionId(signed_encryption_key);
+        setdecryptionKey(patient_private_key);
     }
 
 
     
     return (<div>
+        <WebComponent transactionId={transactionId} decryption_key={decryptionKey}/>
         <Typography variant="h3" color="inherit" component="div" align='center'>
                 Patient Decryption Portal 
         </Typography>
-         <FilePond onupdatefiles={(fileItems) => {
-            setPersonalFiles({
-            files: fileItems.map((fileItem) => fileItem)
-        })
-    }}></FilePond>
         <Container component="main" maxWidth="xs">
             <Box
             component="form" 
@@ -72,7 +65,7 @@ function Decrypt(){
                 <TextField
                     id="signed_encryption_key"
                     name="signed_encryption_key"
-                    label="Transaction meta data"
+                    label="Transaction id"
                     sx={{ padding: 1}}
                 />
                 <Button variant="contained" type="submit">Decrypt</Button>
